@@ -15,3 +15,7 @@ p {
 body {
     background-color: #fcfcfc;
 }
+
+table tbody td:nth-child(2){
+  text-align: right;
+}
