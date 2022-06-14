@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Guía de tablas del anuario demográfico de Cuba 2020</title>
+    <title>Guía de tablas anuarios estadísticos Cuba 2020</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"
     integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <!-- Compiled and minified CSS -->
@@ -32,22 +32,41 @@
 
     <div class="container">
         <!-- <h3 class="center-align">Contenido</h3> -->
-        <p class="flow-text center-align">En la siguiente lista encontrarán los enlaces a las tablas del <a href="https://cubaencifras.github.io/Anuario-demografico-2020/anuario_demografico_2020.pdf">Anuario Demográfico de Cuba 2020</a></p>
+        <!-- <p class="flow-text center-align">En la siguiente lista encontrarán los enlaces a las tablas del <a href="https://cubaencifras.github.io/Anuario-demografico-2020/anuario_demografico_2020.pdf">Anuario Demográfico de Cuba 2020</a></p> -->
         <div class="input-field col s6">
           <i class="material-icons prefix">find_in_page</i>
           <input style="width: 20%;" id="myInput" type="text" placeholder="Buscar..">
         </div>
+        <ul class="tabs">
+          <li class="tab col s3"><a class="active"  href="#demografico">Anuario Demográfico</a></li>
+          <li class="tab col s3"><a href="#salud">Anuario de Salud</a></li>
+        </ul>
+        <div id="demografico" class="col s12">
+          <table class="highlight" id="tabla">
+            <thead>
+              
+                  <th style="width: 80%;">Nombre</th>                
+                  <th style="width: 20%; text-align:right">Enlace</th>
+              
+            </thead>  
+            <tbody>                    
+            </tbody>
+          </table>
+        </div>
+        <div id="salud" class="col s12">
+          <table class="highlight" id="tabla_salud">
+            <thead>
+              
+                  <th style="width: 80%;">Nombre</th>                
+                  <th style="width: 20%; text-align:right">Enlace</th>
+              
+            </thead>  
+            <tbody>                    
+            </tbody>
+          </table>
+        </div>
+
         
-        <table class="highlight" id="tabla">
-          <thead>
-            <tr>
-                <th style="width: 80%;">Nombre</th>                
-                <th style="width: 20%; text-align:right">Enlace</th>
-            </tr>
-          </thead>  
-          <tbody>                    
-          </tbody>
-        </table>
       
     </div>
     <footer class="white page-footer">
@@ -63,11 +82,9 @@
 <script type="text/javascript">
   $(document).ready(function () 
   {
-    
+    $('.tabs').tabs(); 
     $.getJSON("./files.json",
         function (data, textStatus, jqXHR) {
-            // years = Object.keys(data);
-            // actualYear = years.length - 1;
             dataJson = data;
 
             data['files'].sort(function (a, b) {
@@ -79,12 +96,31 @@
         }
     );
 
+    $.getJSON("./files_salud.json",
+        function (data, textStatus, jqXHR) {
+            dataJson = data;
+
+            data['files'].sort(function (a, b) {
+              return a.name.localeCompare(b.name);
+            });
+            $.each(data['files'], function (indexInArray, value) { 
+              $("<tr><td>" + value['name'] + "</td><td><a href=\"" + value['dir']+"\"><i class=\"tiny material-icons\">file_download</i></a></td</tr>").appendTo("#tabla_salud")
+            });
+        }
+    );
+
+
+
     $("#myInput").on("keyup", function() {
-    var value = $(this).val().toLowerCase();
-    $("#tabla tr").filter(function() {
-      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+      var value = $(this).val().toLowerCase();
+      $("#tabla tr").filter(function() {
+        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+      });
+      $("#tabla_salud tr").filter(function() {
+        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+      });
+
     });
-  });
 
 
 
